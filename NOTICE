@@ -1,0 +1,29 @@
+Karabas Go C64
+==============
+
+This repository is a port of the Commodore 64 to the Karabas Go / Mini /
+Mini G boards.
+
+Main license: GNU General Public License v3.0 (see LICENSE), unless a file
+carries a different notice.
+
+The SID 8580 implementation in src/rtl/sid_mister8580/ is derived from the
+MiSTer SID / reDIP-SID work and is covered by the CERN Open Hardware Licence
+Version 2 - Strongly Reciprocal (see LICENSES/CERN-OHL-S-2.0.txt).
+
+Third-party components and their authors:
+
+- FPGA64 by Peter Wendrich and contributors (GPL-3.0):
+  src/rtl/c64/cpu_6510.vhd, fpga64_buslogic.vhd, fpga64_keyboard.vhd,
+  fpga64_rgbcolor.vhd, fpga64_sid_iec.vhd, video_vicII_656x.vhd,
+  video_sync.vhd and related files.
+- MiSTer C64 by Sorgelig and contributors (GPL-3.0): the C64 machine,
+  cartridge, SID and VIC integration.
+- 1541 implementation by Dar (darfpga) and contributors.
+- Shared Karabas FPGA modules:
+  https://github.com/andykarpov/karabas-go-modules (git submodule).
+- Karabas firmware/tools: https://github.com/andykarpov/karabas-go-firmware.
+
+ROM data: the Commodore 64 KERNAL, BASIC and character generator and the
+1541 ROM are property of their respective owners. They are build inputs for
+the local core and are not relicensed by this repository.

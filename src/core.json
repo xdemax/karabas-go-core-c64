@@ -1,0 +1,127 @@
+{
+    "id": "c64",
+    "name": "Commodore 64",
+    "build": "26111121",
+    "visible": true,
+    "type": "osd",
+    "order": 10,
+    "eeprom_bank": 255,
+    "roms": [],
+    "boards": {
+        "go": {
+            "bitstream": "karabas_go.bin"
+        },
+        "mini": {
+            "bitstream": "karabas_mini.bin"
+        },
+        "minig": {
+            "bitstream": "karabas_minig.bin"
+        }
+    },
+    "osd": [
+        {
+            "type": "T",
+            "key": "reset",
+            "name": "Reset",
+            "hotkey": "F12"
+        },
+        {
+            "type": "M",
+            "name": "Drives",
+            "open": 2
+        },
+        {
+            "type": "M",
+            "name": "System",
+            "open": 3
+        },
+        {
+            "type": "-",
+            "name": "-"
+        },
+        {
+            "type": "M",
+            "name": "About",
+            "open": 1
+        },
+        {
+            "type": "P",
+            "name": "C64 FPGA: Peter Wendrich",
+            "page": 1
+        },
+        {
+            "type": "P",
+            "name": "MiSTer: Sorgelig et al.",
+            "page": 1
+        },
+        {
+            "type": "P",
+            "name": "Karabas port",
+            "page": 1
+        },
+        {
+            "type": "F",
+            "name": "Disk 8",
+            "slot": 0,
+            "extensions": ".d64",
+            "dir": "/c64",
+            "hotkey": "Menu+F3",
+            "page": 2
+        },
+        {
+            "type": "FL",
+            "name": "PRG",
+            "slot": 1,
+            "extensions": ".prg",
+            "dir": "/c64/prg",
+            "hotkey": "Menu+F5",
+            "page": 2
+        },
+        {
+            "type": "F",
+            "name": "CRT",
+            "slot": 5,
+            "extensions": ".crt",
+            "dir": "/c64/crt",
+            "hotkey": "Menu+F6",
+            "page": 2,
+            "autoload": true
+        },
+        {
+            "type": "F",
+            "name": "Tape",
+            "slot": 6,
+            "extensions": ".tap",
+            "dir": "/c64/tap",
+            "hotkey": "Menu+F7",
+            "page": 2
+        },
+        {
+            "type": "F",
+            "name": "1541 ROM",
+            "slot": 3,
+            "extensions": ".rom,.bin",
+            "dir": "/c64/roms",
+            "page": 2
+        },
+        {
+            "type": "F",
+            "name": "C64 KERNAL",
+            "slot": 2,
+            "extensions": ".rom,.bin",
+            "dir": "/c64/roms",
+            "page": 3
+        },
+        {
+            "type": "S",
+            "name": "Joystick swap",
+            "options": [
+                "Off",
+                "On"
+            ],
+            "default": 0,
+            "index": 1,
+            "page": 3
+        }
+    ]
+}

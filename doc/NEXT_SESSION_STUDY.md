@@ -89,12 +89,14 @@
 - Что чистить: отладочные 8 квадратов, мёртвый staging/FL, лишние
   порты; затем high-effort `make minig` до Timing 0.
 
-## 5. TAP (следующая большая фича)
+## 5. Кассета: TAP/T64 не нужны
 
-- MiSTer `C64_MiSTer-master/c64.sv`: `load_tap`, tape player, `TAP_ADDR`.
-- Tang `c64nano.vhd`: `load_tap`, `tap_*`.
-- C64 core `fpga64_sid_iec.vhd`: `tape_play/rew/stop/ff/reset_counter`.
-- Формат TAP/C1530, кнопки/счётчик, где хранить образ (SRAM/SDRAM).
+Решено: загрузка только с реального разъёма магнитофона (`TAPE_IN`),
+файловый TAP/T64-лоадер не делаем. Смотреть `doc/TAPE_IN.md`.
+
+- `TAPE_IN` → `cass_read` → CIA FLAG; штатный `LOAD`/`RUN` KERNAL.
+- `TAPE_OUT` не используется (запись не делаем), мотор не управляется.
+- TAP/C1530, `load_tap`, `tape_play/rew/stop/ff` — не внедряем.
 
 ## 6. Stereo SID
 

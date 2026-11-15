@@ -35,13 +35,13 @@
 | Запись/сохранение | — (`dsk_wr` не подключён) | да, save_track на SD | да, background save |
 | Parallel/DolphinDOS | — | DolphinDOS 2 | DolphinDOS |
 | Внешний IEC | — | да | да |
-| Лента | — | TAP/C1530 | TAP/C1530 + счётчик/FF/REW |
+| Лента | внешний `TAPE_IN` (штатный `LOAD`/`RUN`), файлового TAP нет | TAP/C1530 | TAP/C1530 + счётчик/FF/REW |
 | Картриджи | CRT `F`: парсер/данные есть, маппер Ocean/EasyFlash не финальный | CRT/EasyFlash/freezer | почти все CRT, EasyFlash, boot/autosave |
 | PRG | да (`FL`, авто `RUN`) | да | да |
 | REU/GeoRAM | — | 512K/2M/16M** + GeoRAM | 512K/2M/16M + GeoRAM 4M |
-| T64 | — | — | в селекторе монтирования |
+| T64 | — (не планируется) | — | в селекторе монтирования |
 | C1581 ROM | — | — | да |
-| Файлы | D64, KERNAL/1541 ROM, PRG, CRT (CRT в работе) | D64/G64/CRT/PRG/BIN/TAP/FLT/REU | D64/G64/T64/D81/PRG/CRT/REU/TAP/ROM/FLT |
+| Файлы | D64, KERNAL/1541 ROM, PRG, CRT (CRT в работе); кассета — только `TAPE_IN` | D64/G64/CRT/PRG/BIN/TAP/FLT/REU | D64/G64/T64/D81/PRG/CRT/REU/TAP/ROM/FLT |
 
 \* T64 указан в `CONF_STR` MiSTer, но основные реально проверенные — D64/G64/D81.  
 \** 16 МБ REU только на платах кроме TN20K; на TN20K — 512K/2M.
@@ -69,9 +69,10 @@
 
 Наш Karabas сейчас — это **C64 + одна 1541 (D64 read-only) + KERNAL/1541 ROM
 + PRG (FL) + CRT (F, в работе) + HDMI/PCM + OSD + индикаторы**.
-Из таблицы пока отсутствует: TAP, G64/D81, запись диска, REU/GeoRAM,
+Из таблицы пока отсутствует: G64/D81, запись диска, REU/GeoRAM,
 stereo/DigiMax/OPL2, MIDI/RS232/6551, parallel/external IEC, mouse/paddles,
-C64GS, turbo, RTC, freezer. Подробности — `doc/STATUS_2026-11-11.md`.
+C64GS, turbo, RTC, freezer. TAP/T64 из файла не планируются: кассета
+работает через внешний `TAPE_IN`. Подробности — `doc/STATUS_2026-11-11.md`.
 
 ## План добавления файлов
 
@@ -80,7 +81,8 @@ C64GS, turbo, RTC, freezer. Подробности — `doc/STATUS_2026-11-11.md
 2. **CRT — в работе:** MiSTer-парсер `c64_crt_loader.v` + `cartridge.v`,
    транспорт через `F`/`img_sdc` с секторным буфером. Осталось: фильтр
    ложного eject при монтировании, маппер Ocean Type 1 и EasyFlash.
-3. **TAP** — позже, нужна C1530/tape-подсистема.
+3. **TAP/T64** — не планируются; кассета читается с реального `TAPE_IN`
+   штатным `LOAD`/`RUN`.
 
 Железо менять не нужно; для CRT используется свободная SRAM (банки
 `0x020000…`), для PRG — C64 RAM через `p_*`.

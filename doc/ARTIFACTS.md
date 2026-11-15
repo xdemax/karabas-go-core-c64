@@ -15,6 +15,7 @@
 - `c64_link2_26111510_e71700a2.kg` — все три платы, `link: 2`,
   `BITSTREAM_LINK2`; нужна прошивка **26111315+**.
 - md5: `e71700a26d7a0de12053b2c78c0fdb0a`.
+- GitHub Release: `https://github.com/xdemax/karabas-go-core-c64/releases/tag/v26111510`.
 - Собрана из рабочего дерева `tape-in` (внешний `TAPE_IN`, без TAP/T64).
 - В этой сборке: убран экранный индикатор `T` (остался только `8`),
   на Mini G убран неиспользуемый вход `FT_CLK` (оставлен `FT_CLK_OUT`).

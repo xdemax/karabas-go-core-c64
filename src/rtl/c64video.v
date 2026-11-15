@@ -50,8 +50,6 @@ module c64video #(
     input         rst,                         // active high, any domain-ish
     input         disk_act,                    // 1541 read activity, clk_vid
     input         disk_wr,                     // 1541 write activity, clk_vid
-    input         tape_act,                    // tape motor/read activity, clk_vid
-    input         tape_wr,                     // tape write activity, clk_vid
 
     // from fpga64_sid_iec (clk_sys domain)
     input  [7:0]  vic_r,
@@ -254,16 +252,14 @@ module c64video #(
     wire [7:0] e_g = {rd[10:5],  rd[10:9]};
     wire [7:0] e_b = {rd[4:0],   rd[4:2]};
 
-    // Activity square: 8 (disk) or T (tape), green = read, red = write.
+    // Activity square: 8 (disk), green = read, red = write.  The tape T
+    // marker was removed with the TAP loader; the cassette is external.
     wire [9:0] mark_x = hc - 10'd13;
     wire [9:0] mark_y = vc - 10'd558;
-    wire       tape_sel = tape_act | tape_wr;
-    wire       ind_on   = tape_sel | disk_act | disk_wr;
-    wire       ind_wr   = tape_sel ? tape_wr : disk_wr;
-    wire       ind_t    = tape_sel;
+    wire       ind_on   = disk_act | disk_wr;
+    wire       ind_wr   = disk_wr;
 
     reg [5:0] digit_row8;
-    reg [5:0] digit_rowt;
     always @(*) begin
         case (mark_y[2:0])
             3'd0: digit_row8 = 6'b011110;
@@ -275,18 +271,8 @@ module c64video #(
             3'd6: digit_row8 = 6'b011110;
             default: digit_row8 = 6'b000000;
         endcase
-        case (mark_y[2:0])
-            3'd0: digit_rowt = 6'b111111;
-            3'd1: digit_rowt = 6'b001100;
-            3'd2: digit_rowt = 6'b001100;
-            3'd3: digit_rowt = 6'b001100;
-            3'd4: digit_rowt = 6'b001100;
-            3'd5: digit_rowt = 6'b001100;
-            3'd6: digit_rowt = 6'b001100;
-            default: digit_rowt = 6'b000000;
-        endcase
     end
-    wire [5:0] ind_row = ind_t ? digit_rowt : digit_row8;
+    wire [5:0] ind_row = digit_row8;
     wire ind_glyph = (hc >= 10'd13) && (hc < 10'd19) &&
                      (vc >= 10'd558) && (vc < 10'd565) &&
                      ind_row[5 - mark_x[2:0]];

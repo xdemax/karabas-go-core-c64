@@ -223,8 +223,8 @@ NET "FLASH_WP_N"       LOC="N12"    | IOSTANDARD = LVCMOS33; # CONF_IO2
 NET "FLASH_HOLD_N"     LOC="P12"    | IOSTANDARD = LVCMOS33; # CONF_IO3
 
 # ------------------------------------------------------------------------------------------------------------
-# C64 (Mini G): VCO 975 MHz (50/2*39).  clk_sys 31.4516 MHz, clk_vid 27.0833 MHz (HDMI pixel),
-# clk_8mhz 7.9918 MHz (FT812), clk_host 25 MHz (MCU).
+# C64 (Mini G): VCO 1000 MHz (50*20).  clk_sys 31.25 MHz, clk_vid 31.25 MHz (HDMI pixel),
+# clk_8mhz 8 MHz (FT812), clk_host 25 MHz (MCU).
 NET "CLK_50MHZ" TNM_NET = "CLK_50MHZ";
 TIMESPEC "TS_CLK_50MHZ" = PERIOD "CLK_50MHZ" 20 ns HIGH 50%;
 NET "pll_clk<0>" TNM_NET = "TG_SYS";
@@ -246,7 +246,8 @@ TIMESPEC "TS_SYS_VID" = FROM "TG_SYS" TO "TG_VID" 31 ns DATAPATHONLY;
 TIMESPEC "TS_VID_SYS" = FROM "TG_VID" TO "TG_SYS" 31 ns DATAPATHONLY;
 TIMESPEC "TS_HOST_VID" = FROM "TG_HOST" TO "TG_VID" 31 ns DATAPATHONLY;
 TIMESPEC "TS_VID_HOST" = FROM "TG_VID" TO "TG_HOST" 31 ns DATAPATHONLY;
-# I2S: DIN / WS launch on the pixel clock, the DAC samples on the rising (inverted) BCK
+# I2S: DIN / WS launch on the falling BCK, the DAC samples the next rising edge
+# half a period later (same scheme as the Go board and the UKNC core)
 TIMEGRP "TG_DAC_OUT" = PADS("DAC_DAT") PADS("DAC_WS");
 TIMESPEC "TS_DAC_OUT" = FROM FFS TO "TG_DAC_OUT" 20 ns DATAPATHONLY;
 # SRAM IS61WV20488 (tAA 10 ns): address on a clk_sys edge, data in the IOB register one edge later
@@ -264,7 +265,7 @@ TIMESPEC "TS_HOST_MA_OUT" = FROM "TG_HOST" TO "TG_SRAM_OUT" TIG;
 # acknowledged, so the clk_host -> clk_sram crossing is not a single-cycle path.
 TIMESPEC "TS_HOST_SRAM" = FROM "TG_HOST" TO "TG_SRAM_CLK" TIG;
 # HDMI (kg_hdmi_ft): the pixel clock is clk_vid; the FT812 video is not used (ft_sel 0)
-NET "FT_CLK" TNM_NET = "TG_CLK_FT";
-TIMESPEC "TS_CLK_FT" = PERIOD "TG_CLK_FT" 80 MHz HIGH 50%;
+# FT_CLK (the FT812 pixel clock input) is unused: ft_sel = 0.  FT_CLK_OUT is
+# still generated (8 MHz) to keep the FT812 quiet.
 NET "hdmi_top/p_clk_int" TNM_NET = "TG_CLK_PIX";
 TIMESPEC "TS_VID_TO_PIX" = FROM "TG_VID" TO "TG_CLK_PIX" 25 ns DATAPATHONLY;

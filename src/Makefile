@@ -25,8 +25,8 @@ MAKE_CORE = ../tools/make_core.py
 
 MAP_OPT = -logic_opt off -ol high -xe n -xt 0 -register_duplication off -r 4 -global_opt off -mt 2 -detail -ir off -pr b -power off
 MAP_OPT_go = $(MAP_OPT)
-MAP_OPT_minig = $(MAP_OPT)
-# Mini needs global optimization for the last clk_sys -> clk_sram SRAM address paths.
+# Mini and MiniG need global optimization for the last clk_sys -> clk_sram SRAM address paths.
+MAP_OPT_minig = -logic_opt off -ol high -xe n -xt 0 -register_duplication off -r 4 -global_opt speed -mt 2 -detail -ir off -pr b -power off
 MAP_OPT_mini = -logic_opt off -ol high -xe n -xt 0 -register_duplication off -r 4 -global_opt speed -mt 2 -detail -ir off -pr b -power off
 PAR_OPT = -ol high -xe n -mt 4
 

@@ -222,8 +222,8 @@ NET "FLASH_WP_N"       LOC="N12"    | IOSTANDARD = LVCMOS33; # CONF_IO2
 NET "FLASH_HOLD_N"     LOC="P12"    | IOSTANDARD = LVCMOS33; # CONF_IO3
 
 # ------------------------------------------------------------------------------------------------------------
-# C64 (Mini G): VCO 975 MHz (50/2*39).  clk_sys 31.4516 MHz, clk_vid 27.0833 MHz (HDMI pixel),
-# clk_8mhz 7.9918 MHz (FT812), clk_host 25 MHz (MCU).
+# C64 (Mini rev A-F): VCO 1000 MHz (50*20).  clk_sys 31.25 MHz, clk_vid 31.25 MHz (HDMI pixel),
+# clk_8mhz 8 MHz (FT812), clk_host 25 MHz (MCU).
 NET "CLK_50MHZ" TNM_NET = "CLK_50MHZ";
 TIMESPEC "TS_CLK_50MHZ" = PERIOD "CLK_50MHZ" 20 ns HIGH 50%;
 NET "pll_clk<0>" TNM_NET = "TG_SYS";

@@ -11,11 +11,13 @@
 | Плата | Top | Видео | Аудио | MCU_SCK |
 |---|---|---|---|---|
 | `go` | `karabas_go_top.v` | VGA 8:8:8 + `V_CLK` | PCM5102 | не на клок-пине, `BURST_MAX_MHZ(0)` |
-| `mini` | `karabas_mini_top.v` | HDMI + FT812 | sigma-delta `AUDIO_L/R` | не на клок-пине, `BURST_MAX_MHZ(0)` |
-| `minig` | `karabas_minig_top.v` | HDMI + FT812 | PCM5102 I2S | IBUFG + BUFG, bursts 16 MHz |
+| `mini` | `karabas_mini_top.v` | HDMI (FT812 не используется) | sigma-delta `AUDIO_L/R` | не на клок-пине, `BURST_MAX_MHZ(0)` |
+| `minig` | `karabas_minig_top.v` | HDMI (FT812 не используется) | PCM5102 I2S | IBUFG + BUFG, bursts 16 MHz |
 
 Mini rev A–F использует UCF «rev.C»; отдельные битстримы по ревизиям не нужны.
 `FT_CLK_OUT` на Mini — E7 (бывший `MCU_IO<4>`), поэтому `MCU_IO` там 4 бита.
+FT812 не участвует в видео/OSD (`ft_sel = 0`); оставлен только `FT_CLK_OUT`
+8 МГц, иначе чип фонит в звук. Подробно — `doc/FT812.md`.
 
 ## 2. Видео и клоки
 

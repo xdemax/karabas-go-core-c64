@@ -1,7 +1,8 @@
 {
     "id": "c64",
     "name": "Commodore 64",
-    "build": "26111121",
+    "build": "26111510",
+    "link": 2,
     "visible": true,
     "type": "osd",
     "order": 10,
@@ -86,15 +87,6 @@
             "hotkey": "Menu+F6",
             "page": 2,
             "autoload": true
-        },
-        {
-            "type": "F",
-            "name": "Tape",
-            "slot": 6,
-            "extensions": ".tap",
-            "dir": "/c64/tap",
-            "hotkey": "Menu+F7",
-            "page": 2
         },
         {
             "type": "F",

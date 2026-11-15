@@ -11,8 +11,6 @@ module c64_video (
 	input wire reset,
 	input wire disk_act,
 	input wire disk_wr,
-	input wire tape_act,
-	input wire tape_wr,
 
 	// VIC-II output (clk_sys)
 	input wire [7:0] vic_r,
@@ -63,8 +61,6 @@ c64video #(
 	.rst           (reset),
 	.disk_act      (disk_act),
 	.disk_wr       (disk_wr),
-	.tape_act      (tape_act),
-	.tape_wr       (tape_wr),
 	.vic_r         (vic_r),
 	.vic_g         (vic_g),
 	.vic_b         (vic_b),

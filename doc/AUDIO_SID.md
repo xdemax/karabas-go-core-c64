@@ -14,7 +14,8 @@ c64_machine.v  (assign audio_l = sid_audio_l)
         ▼
 karabas_minig_top.v
    ├─ HDMI:  kg_hdmi_ft, 48 кГц, audio_en = ~dvi_only
-   └─ DAC:   kg_pcm5102, clk_vid 27.027 МГц, DIV_BITS=2
+   └─ DAC:   kg_pcm5102, clk_vid 31.25 МГц, DIV_BITS=2 (BCK 1.953 МГц,
+             LRCK 61.04 кГц)
              DAC_DAT=D14, DAC_BCK=C15, DAC_WS=C16
 ```
 
@@ -133,3 +134,20 @@ aud_ac_l <= aud_a_l[17:0] - aud_dc_l[17:0];
   формат `audio_data` (signed/excess) и фильтр `sid_filters.v`.
 - Захват идёт с USB-граббера (MS2109), а не с джека напрямую; для проверки
   джека нужен кабель в линейный вход граббера.
+
+## 8. Mini G rev G2: нет звука в джеке (PCM5102)
+
+На Mini G rev G стоит UDA1334ATS, на rev G2 — PCM5102. Ядро на rev G2
+молчало, при этом на Karabas Go с тем же PCM5102 и той же частотой
+(BCK 1.953 МГц, LRCK 61.04 кГц) звук работал.
+
+Причина — не частота, а фаза BCK. На Go `DAC_BCK = i2s_bck` напрямую:
+`kg_pcm5102` меняет DIN/LRCK по падению BCK, DAC сэмплирует следующий
+фронт через полпериода. В обёртке Mini G стоял `ODDR2`, который
+инвертировал BCK, и данные менялись ровно на сэмплирующем фронте
+(tDS/tDH = 0). UDA1334ATS это терпел, PCM5102 — нет. В UKNC инверсия
+тоже есть, но там сериализатор выставляет данные по фронту клока,
+поэтому запас полпериода сохраняется.
+
+Исправление: в `src/rtl/karabas_minig_top.v` BCK отдаётся напрямую, как
+на Go (`assign DAC_BCK = i2s_bck;`), ODDR2 убран. Частота не менялась.

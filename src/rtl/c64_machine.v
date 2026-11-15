@@ -42,6 +42,9 @@ module c64_machine (
 	input wire [12:0] joy_r,
 	input wire sw_joy_swap,
 
+	// external cassette input (comparator output of TAPE_IN)
+	input wire tape_in,
+
 	// SRAM
 	output wire [20:0] MA,
 	inout wire [15:0] MD,
@@ -212,12 +215,6 @@ wire        crt_bank_hi, crt_bank_16k;
 wire [7:0]  crt_bank_num, crt_bank_addr;
 wire        crt_bank_wr_tgl;
 wire        crt_hold;
-wire        tap_busy;
-reg         tap_busy_s1 = 1'b0, tap_busy_s2 = 1'b0;
-always @(posedge clk_sys) begin
-	tap_busy_s1 <= tap_busy;
-	tap_busy_s2 <= tap_busy_s1;
-end
 wire        crt_busy;
 wire        crt_req;
 wire [20:0] crt_addr;
@@ -259,7 +256,7 @@ always @(posedge clk_sys) begin
 	prg_hold_s1 <= prg_hold;
 	prg_hold_s2 <= prg_hold_s1;
 end
-wire c64_core_reset = reset | prg_hold_s2 | cart_hold_s2 | tap_busy_s2;
+wire c64_core_reset = reset | prg_hold_s2 | cart_hold_s2;
 
 wire nmi, cart_oe, io_rom, cart_mem_req;
 wire [7:0] cart_data;
@@ -650,18 +647,14 @@ wire [7:0]  img_file_data, img_file_slot;
 wire        img_file_wr;
 wire        prg_eject, crt_eject;
 
-// TAP image loader / C1530 player
-wire        tap_wr_req, tap_wr_ack;
-wire [18:0] tap_wr_addr;
-wire [7:0]  tap_wr_data;
-wire        tap_loaded;
-wire [19:0] tap_size;
-wire [1:0]  tap_version;
-wire        tape_rd_req, tape_rd_ack;
-wire [18:0] tape_rd_addr;
-wire [15:0] tape_rd_data;
-wire        cass_motor, cass_write, cass_read, cass_sense, cass_run;
-wire        tape_end, tape_error;
+// External cassette input: TAPE_IN is the comparator output of the board.
+// Idle is high; the C64 CIA FLAG input wants the same polarity (active low).
+wire        cass_motor, cass_write, cass_read, cass_sense;
+reg  [1:0]  tape_in_s = 2'b11;
+always @(posedge clk_sys)
+	tape_in_s <= {tape_in_s[0], tape_in};
+assign cass_read  = tape_in_s[1];
+assign cass_sense = 1'b0; // a cassette is always "present" in this test build
 
 wire        prg_p_req;
 wire [15:0] prg_p_addr;
@@ -738,49 +731,6 @@ c64_crt_loader crt_loader(
 	.error()
 );
 
-c64_tap_loader tap_loader(
-	.clk(clk_host),
-	.reset(reset_host),
-	.file_reset(img_file_reset),
-	.file_active(img_file_active),
-	.file_wr(img_file_wr),
-	.file_size(img_file_size),
-	.file_addr(img_file_addr),
-	.file_data(img_file_data),
-	.file_slot(img_file_slot),
-	.eject(img_eject_pulse[6]),
-	.tap_wr_req(tap_wr_req),
-	.tap_wr_addr(tap_wr_addr),
-	.tap_wr_data(tap_wr_data),
-	.tap_wr_ack(tap_wr_ack),
-	.tap_loaded(tap_loaded),
-	.tap_size(tap_size),
-	.tap_version(tap_version),
-	.busy(tap_busy),
-	.error(tape_error)
-);
-
-c64_tape tape(
-	.clk(clk_sys),
-	.reset(reset),
-	.tap_loaded(tap_loaded),
-	.tap_size(tap_size),
-	.tap_version(tap_version),
-	.loader_error(tape_error),
-	.tap_rd_req(tape_rd_req),
-	.tap_rd_addr(tape_rd_addr),
-	.tap_rd_data(tape_rd_data),
-	.tap_rd_ack(tape_rd_ack),
-	.cass_motor(cass_motor),
-	.cass_write(cass_write),
-	.cass_read(cass_read),
-	.cass_sense(cass_sense),
-	.cass_run(cass_run),
-	.tap_play_addr(),
-	.tap_end(tape_end),
-	.tap_error()
-);
-
 c64_prg_loader prg_loader(
 	.clk(clk_host),
 	.reset(prg_reset),
@@ -834,16 +784,12 @@ c64_memory mem(
 	.p_addr(prg_p_addr),
 	.p_data(prg_p_data),
 	.p_ack(prg_p_ack),
-	.c64_hold(prg_hold | crt_hold | tap_busy_s2),
+	.c64_hold(prg_hold | crt_hold),
 	.crt_req(crt_req),
 	.crt_addr(crt_addr),
 	.crt_data(crt_data),
 	.crt_ack(crt_ack),
-	.tap_wr_req(tap_wr_req),
-	.tap_wr_addr(tap_wr_addr),
-	.tap_wr_data(tap_wr_data),
-	.tap_wr_ack(tap_wr_ack),
-	.stg_req(prg_stg_req),
+					.stg_req(prg_stg_req),
 	.stg_addr(prg_stg_addr),
 	.stg_data(prg_stg_data),
 	.stg_ack(prg_stg_ack),
@@ -851,11 +797,7 @@ c64_memory mem(
 	.rd_addr(prg_rd_addr),
 	.rd_data(prg_rd_data),
 	.rd_ack(prg_rd_ack),
-	.vr_req(tape_rd_req),
-	.vr_addr(tape_rd_addr),
-	.vr_data(tape_rd_data),
-	.vr_ack(tape_rd_ack),
-	.MA(MA),
+					.MA(MA),
 	.MD(MD),
 	.MWR_N(MWR_N),
 	.MRD_N(MRD_N)
@@ -894,22 +836,16 @@ always @(posedge clk_sys) begin
 end
 assign host_loadrom = host_loadrom_r;
 
-// activity marker in the bottom border: disk 8 / tape T, green read / red write
+// activity marker in the bottom border: disk 8, green read / red write.
+// The tape T marker was removed with the TAP loader; the cassette itself is
+// an external TAPE_IN input and has no on-screen indicator.
 reg disk_led_s1, disk_led_s2;
 reg dsk_wr_s1, dsk_wr_s2;
-reg tape_act_s1, tape_act_s2;
-reg tape_wr_s1, tape_wr_s2;
 always @(posedge clk_vid) begin
 	disk_led_s1 <= drive_led;
 	disk_led_s2 <= disk_led_s1;
 	dsk_wr_s1   <= dsk_wr;
 	dsk_wr_s2   <= dsk_wr_s1;
-	// cass_run is the motor level: 0 = motor on (tape playing).  Also show T
-	// while the TAP image itself is being loaded into SRAM.
-	tape_act_s1 <= (~cass_run) | tap_busy_s2;
-	tape_act_s2 <= tape_act_s1;
-	tape_wr_s1  <= cass_write;
-	tape_wr_s2  <= tape_wr_s1;
 end
 wire disk_act_vid = disk_led_s2;
 
@@ -919,8 +855,6 @@ c64_video video(
 	.reset(reset_host),
 	.disk_act(disk_act_vid),
 	.disk_wr(dsk_wr_s2),
-	.tape_act(tape_act_s2),
-	.tape_wr(tape_wr_s2),
 	.vic_r(vic_r),
 	.vic_g(vic_g),
 	.vic_b(vic_b),

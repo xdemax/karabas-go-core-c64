@@ -1,7 +1,7 @@
 {
     "id": "c64",
     "name": "Commodore 64",
-    "build": "26111620",
+    "build": "26111630",
     "link": 2,
     "visible": true,
     "type": "osd",
@@ -39,6 +39,14 @@
         {
             "type": "-",
             "name": "-"
+        },
+        {
+            "type": "P",
+            "name": "C64 port from MiSTer FPGA"
+        },
+        {
+            "type": "P",
+            "name": "by Karabas Team"
         },
         {
             "type": "F",

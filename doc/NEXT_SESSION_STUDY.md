@@ -1,9 +1,10 @@
 # Что изучить перед следующей сессией
 
-Дата: 2026-11-11. Список по приоритету; сначала — то, что блокирует CRT
-на Mini G. Текущее состояние — `doc/STATUS_2026-11-11.md`.
+Дата: 2026-11-16. Список по приоритету. Типовые CRT уже проверялись и
+работают; ниже — что осталось уточнить по отдельным мапперам и
+транспорту. Текущее состояние — `README.md`, `doc/ARCHITECTURE.md`.
 
-## 1. CRT-маппер (главный блокер)
+## 1. CRT: отдельные мапперы (Ocean Type 1 / EasyFlash)
 
 Изучить построчно:
 
@@ -41,8 +42,8 @@
 
 Изучить:
 
-- `karabas-go-modules-master/rtl/mcu/kg_mcu_loader.v` — IOCTL_SLOT/SIZE/
-  STATE, `file_reset`, `file_active`, `file_wr`.
+- `modules/rtl/mcu/kg_l2_load.v` — `LD_KIND/SLOT/SIZE/START/ACTIVE/WR`;
+  FL-элементы идут как kind 2, PRG — через `c64_prg_loader`.
 - `karabas-go-modules-master/rtl/mcu/kg_mcu_img.v` — `IMG_SLOT`,
   `IMG_SIZE`, `img_mounted` (один такт), size0.
 - `src/rtl/c64_img_mount.v` — persistent `mounted`, `mount_pulse`,
@@ -56,16 +57,16 @@
 
 Вопросы:
 
-1. Почему F `autoload: true` не монтируется на старте, а FL — да?
-2. Что именно firmware шлёт при F-монтировании: size0 eject, level-fall
-   или mount+close? Почему ложный eject приходит **до** заголовка CRT?
-3. Настоящий `Del` F-слота — это size0 или отдельный сигнал? Какой
-   `eject_pulse` у ROM (slot2/3) и почему он не мешает?
-4. Можно ли отфильтровать ложный eject по `pending`/`state`, не задерживая
-   настоящий `Del`? Текущий фильтр: ignore пока `pending5`/не IDLE + 2 с
-   после чтения.
-5. Нужно ли для CRT использовать **FL** (autoload работает) вместо F,
-   и как тогда сделать eject (OSD item/softswitch)?
+1. F `autoload: true` на прошивке 26111315+: проверить, монтируется ли
+   F-слот на старте; у FL autoload работает.
+2. Что firmware шлёт при F-монтировании в link v2 (`IMG MOUNT`/события)?
+   Ложный eject в текущем RTL отфильтрован — проверить на железе, что
+   заголовок CRT не обрывается.
+3. Настоящий `Del` F-слота — отдельный сигнал или size0? `eject_pulse`
+   ROM (slot2/3) не должен мешать.
+4. Фильтр `pending5`/`S_FEED` + 2 с после чтения оставлен; проверить, что
+   настоящий `Del` не задерживается.
+5. CRT остаётся на `F` (slot 5); переводить на `FL` не нужно.
 
 ## 3. C64-шина, сброс, ROM/картридж
 

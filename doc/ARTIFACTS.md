@@ -32,6 +32,7 @@
 - `c64_link2_26111640_d8c66958.kg` — все три платы, `link: 2`,
   `BITSTREAM_LINK2`; нужна прошивка **26111315+**.
 - md5: `d8c6695857a7c176fa32da74c8783445`.
+- GitHub Release: `https://github.com/xdemax/karabas-go-core-c64/releases/tag/v26111640`.
 - Видео: `V_CONTENT=576`, `V_OFFSET=0`, `SRC_LINE0=18`, `SRC_X0=11`;
   активная область 640×400 отцентрована, чёрных полос нет.
 - OSD: `About` и лишние титры убраны; главная — только Reset, Drives,

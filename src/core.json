@@ -1,7 +1,7 @@
 {
     "id": "c64",
     "name": "Commodore 64",
-    "build": "26111610",
+    "build": "26111620",
     "link": 2,
     "visible": true,
     "type": "osd",
@@ -39,26 +39,6 @@
         {
             "type": "-",
             "name": "-"
-        },
-        {
-            "type": "M",
-            "name": "About",
-            "open": 1
-        },
-        {
-            "type": "P",
-            "name": "C64 FPGA: Peter Wendrich",
-            "page": 1
-        },
-        {
-            "type": "P",
-            "name": "MiSTer: Sorgelig et al.",
-            "page": 1
-        },
-        {
-            "type": "P",
-            "name": "Karabas port",
-            "page": 1
         },
         {
             "type": "F",

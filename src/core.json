@@ -1,7 +1,7 @@
 {
     "id": "c64",
     "name": "Commodore 64",
-    "build": "26111730",
+    "build": "26111740",
     "link": 2,
     "visible": true,
     "type": "osd",
@@ -90,7 +90,8 @@
             "type": "T",
             "key": "reset",
             "name": "Reset",
-            "hotkey": "F12"
+            "hotkey": "F12",
+            "index": 0
         },
         {
             "type": "P",

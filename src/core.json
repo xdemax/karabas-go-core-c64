@@ -1,7 +1,7 @@
 {
     "id": "c64",
     "name": "Commodore 64",
-    "build": "26111740",
+    "build": "26111750",
     "link": 2,
     "visible": true,
     "type": "osd",
@@ -81,17 +81,6 @@
             "type": "M",
             "name": "Keyboard mapping",
             "open": 1
-        },
-        {
-            "type": "-",
-            "name": "-"
-        },
-        {
-            "type": "T",
-            "key": "reset",
-            "name": "Reset",
-            "hotkey": "F12",
-            "index": 0
         },
         {
             "type": "P",
@@ -194,8 +183,11 @@
             "page": 1
         },
         {
-            "type": "P",
-            "name": "Reset             F12",
+            "type": "T",
+            "key": "reset",
+            "name": "Reset",
+            "hotkey": "F12",
+            "index": 0,
             "page": 1
         }
     ]

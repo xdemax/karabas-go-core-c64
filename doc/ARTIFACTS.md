@@ -27,6 +27,17 @@
 - Предыдущий v1-билд сохранён как
   `c64_link1_26111201_d769542d.kg`, md5 `d769542d4247e4cfd2130f68789b32ec`.
 
+## Тестовая сборка 26111750 (2026-11-17)
+
+- `c64_link2_26111750_2f30b5bf.kg` — все три платы, `link: 2`,
+  `BITSTREAM_LINK2`; нужна прошивка **26111315+**.
+- md5: `2f30b5bf5653c0436531344c7280f8d4`.
+- GitHub Release: `https://github.com/xdemax/karabas-go-core-c64/releases/tag/v26111750`.
+- OSD: `Reset` (T, F12) перенесён со главной страницы в `Keyboard mapping`;
+  индекс 0 сохранён, F12 работает глобально.
+- Главная: `Disk 8`, `PRG`, `CRT`, `C64 KERNAL`, `1541 ROM`,
+  `Joystick swap`, `Keyboard mapping`.
+
 ## Тестовая сборка 26111740 (2026-11-17)
 
 - `c64_link2_26111740_dd379351.kg` — все три платы, `link: 2`,

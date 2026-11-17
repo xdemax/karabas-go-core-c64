@@ -1,7 +1,7 @@
 {
     "id": "c64",
     "name": "Commodore 64",
-    "build": "26111640",
+    "build": "26111730",
     "link": 2,
     "visible": true,
     "type": "osd",
@@ -21,29 +21,12 @@
     },
     "osd": [
         {
-            "type": "T",
-            "key": "reset",
-            "name": "Reset",
-            "hotkey": "F12"
-        },
-        {
-            "type": "M",
-            "name": "Drives",
-            "open": 2
-        },
-        {
-            "type": "M",
-            "name": "System",
-            "open": 3
-        },
-        {
             "type": "F",
             "name": "Disk 8",
             "slot": 0,
             "extensions": ".d64",
             "dir": "/c64",
-            "hotkey": "Menu+F3",
-            "page": 2
+            "hotkey": "Menu+F3"
         },
         {
             "type": "FL",
@@ -51,8 +34,7 @@
             "slot": 1,
             "extensions": ".prg",
             "dir": "/c64/prg",
-            "hotkey": "Menu+F5",
-            "page": 2
+            "hotkey": "Menu+F5"
         },
         {
             "type": "F",
@@ -61,24 +43,29 @@
             "extensions": ".crt",
             "dir": "/c64/crt",
             "hotkey": "Menu+F6",
-            "page": 2,
             "autoload": true
         },
         {
-            "type": "F",
-            "name": "1541 ROM",
-            "slot": 3,
-            "extensions": ".rom,.bin",
-            "dir": "/c64/roms",
-            "page": 2
+            "type": "-",
+            "name": "-"
         },
         {
             "type": "F",
             "name": "C64 KERNAL",
             "slot": 2,
             "extensions": ".rom,.bin",
-            "dir": "/c64/roms",
-            "page": 3
+            "dir": "/c64/roms"
+        },
+        {
+            "type": "F",
+            "name": "1541 ROM",
+            "slot": 3,
+            "extensions": ".rom,.bin",
+            "dir": "/c64/roms"
+        },
+        {
+            "type": "-",
+            "name": "-"
         },
         {
             "type": "S",
@@ -88,8 +75,127 @@
                 "On"
             ],
             "default": 0,
-            "index": 1,
-            "page": 3
+            "index": 1
+        },
+        {
+            "type": "M",
+            "name": "Keyboard mapping",
+            "open": 1
+        },
+        {
+            "type": "-",
+            "name": "-"
+        },
+        {
+            "type": "T",
+            "key": "reset",
+            "name": "Reset",
+            "hotkey": "F12"
+        },
+        {
+            "type": "P",
+            "name": "C64 KEY           PC KEY",
+            "page": 1
+        },
+        {
+            "type": "P",
+            "name": "RUN/STOP          Esc",
+            "page": 1
+        },
+        {
+            "type": "P",
+            "name": "RUN               Shift+Esc",
+            "page": 1
+        },
+        {
+            "type": "P",
+            "name": "RESTORE           F11",
+            "page": 1
+        },
+        {
+            "type": "P",
+            "name": "C=                Tab / LAlt",
+            "page": 1
+        },
+        {
+            "type": "P",
+            "name": "DEL               Backspace",
+            "page": 1
+        },
+        {
+            "type": "P",
+            "name": "INST/DEL          Insert",
+            "page": 1
+        },
+        {
+            "type": "P",
+            "name": "CLR/HOME          Home",
+            "page": 1
+        },
+        {
+            "type": "P",
+            "name": "Cursor            Arrows",
+            "page": 1
+        },
+        {
+            "type": "P",
+            "name": "Cursor up         F9",
+            "page": 1
+        },
+        {
+            "type": "P",
+            "name": "F1-F8             F1-F8",
+            "page": 1
+        },
+        {
+            "type": "P",
+            "name": "Letters/digits    same",
+            "page": 1
+        },
+        {
+            "type": "P",
+            "name": "Ctrl/Shift/Return same",
+            "page": 1
+        },
+        {
+            "type": "P",
+            "name": "Other keys        same",
+            "page": 1
+        },
+        {
+            "type": "-",
+            "name": "-",
+            "page": 1
+        },
+        {
+            "type": "P",
+            "name": "OSD ACTION        PC KEY",
+            "page": 1
+        },
+        {
+            "type": "P",
+            "name": "Open/close        Menu+Esc",
+            "page": 1
+        },
+        {
+            "type": "P",
+            "name": "Disk 8            Menu+F3",
+            "page": 1
+        },
+        {
+            "type": "P",
+            "name": "PRG               Menu+F5",
+            "page": 1
+        },
+        {
+            "type": "P",
+            "name": "CRT               Menu+F6",
+            "page": 1
+        },
+        {
+            "type": "P",
+            "name": "Reset             F12",
+            "page": 1
         }
     ]
 }

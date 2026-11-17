@@ -29,6 +29,7 @@ module c64_d64_rd #(
 	input wire        clk,              // clk_sys
 	input wire        reset,
 	input wire        invalidate,       // D64 loader busy
+	input wire        disk_present,     // slot 0 has a mounted image
 
 	input wire [18:0] dsk_addr,
 	output reg [7:0]  dsk_data_in,
@@ -66,6 +67,15 @@ always @(posedge clk) begin
 		st          <= S_IDLE;
 		valid       <= 1'b0;
 		mem_rd      <= 1'b0;
+		gap         <= 2'd0;
+	end
+	else if (!disk_present) begin
+		// No image in slot 0 (eject): the old D64 bytes may still be in SRAM.
+		// Feed 0xFF so the 1541 cannot find a SYNC/header and LOAD fails.
+		st          <= S_IDLE;
+		valid       <= 1'b0;
+		mem_rd      <= 1'b0;
+		dsk_data_in <= 8'hFF;
 		gap         <= 2'd0;
 	end
 	else begin

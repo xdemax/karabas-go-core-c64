@@ -582,10 +582,19 @@ wire        d64_mem_rd;
 wire [7:0]  d64_mem_data;
 wire        d64_mem_ack;
 
+// slot 0 mount flag into clk_sys (it is a persistent level from clk_host)
+reg img_disk_s1 = 1'b0, img_disk_s2 = 1'b0;
+always @(posedge clk_sys) begin
+	img_disk_s1 <= img_mounted[0];
+	img_disk_s2 <= img_disk_s1;
+end
+wire disk_present = img_disk_s2;
+
 c64_d64_rd d64_rd(
 	.clk(clk_sys),
 	.reset(reset),
 	.invalidate(loader_busy),
+	.disk_present(disk_present),
 	.dsk_addr(dsk_addr),
 	.dsk_data_in(dsk_data_in),
 	.mem_addr(d64_mem_addr),
@@ -812,17 +821,27 @@ wire d64_ready;
 reg [15:0] loadrom_hold = 16'd0;
 reg        host_loadrom_r = 1'b0;
 reg        loadrom_done = 1'b0;
+reg        disk_present_d = 1'b0;
 always @(posedge clk_sys) begin
 	if (reset) begin
 		host_loadrom_r <= 1'b0;
 		loadrom_hold   <= 16'd0;
 		loadrom_done   <= 1'b0;
+		disk_present_d <= 1'b0;
 	end
 	else begin
+		disk_present_d <= disk_present;
 		if (!d64_ready)
 			loadrom_done <= 1'b0;
 
-		if (d64_ready && !loadrom_done && loadrom_hold == 16'd0) begin
+		// An eject is also a disk change: let the 1541 re-seek even though
+		// the old D64 bytes are still in SRAM (the read path now returns 0xFF).
+		if (!disk_present && disk_present_d && loadrom_hold == 16'd0) begin
+			host_loadrom_r <= 1'b1;
+			loadrom_hold   <= 16'd4096;
+			loadrom_done   <= 1'b1;
+		end
+		else if (d64_ready && !loadrom_done && loadrom_hold == 16'd0) begin
 			host_loadrom_r <= 1'b1;
 			loadrom_hold   <= 16'd4096;
 			loadrom_done   <= 1'b1;

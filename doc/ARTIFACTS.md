@@ -27,6 +27,19 @@
 - Предыдущий v1-билд сохранён как
   `c64_link1_26111201_d769542d.kg`, md5 `d769542d4247e4cfd2130f68789b32ec`.
 
+## Тестовая сборка 26111760 (2026-11-17)
+
+- `c64_link2_26111760_8f97052f.kg` — все три платы, `link: 2`,
+  `BITSTREAM_LINK2`; нужна прошивка **26111315+**.
+- md5: `8f97052fd9deffeaaa1110946f2cb847`.
+- GitHub Release: `https://github.com/xdemax/karabas-go-core-c64/releases/tag/v26111760`.
+- D64 eject: `c64_d64_rd` при `img_mounted[0]=0` отдаёт `0xFF` и не
+  читает SRAM; `host_loadrom` пульсирует как disk change. Старый образ
+  после `Del` больше не загружается.
+- Остальное как в 26111750: Reset в `Keyboard mapping`, плоское меню,
+  центр видео.
+- Timing 0: Go 73/93%, Mini 86/99%, Mini G 87/99% (LUT/slices).
+
 ## Тестовая сборка 26111750 (2026-11-17)
 
 - `c64_link2_26111750_2f30b5bf.kg` — все три платы, `link: 2`,

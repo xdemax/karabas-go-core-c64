@@ -9,10 +9,10 @@
 нужна прошивка **26111315 или новее**. На более старой прошивке ядро не
 загрузится: его битстрим лежит в секции `BITSTREAM_LINK2`.
 
-Последний релиз: **`v26111760`** —
-`https://github.com/xdemax/karabas-go-core-c64/releases/tag/v26111760`.
+Последний релиз: **`v26112210`** —
+`https://github.com/xdemax/karabas-go-core-c64/releases/tag/v26112210`.
 
-## Статус (2026-11-17)
+## Статус (2026-11-22)
 
 Подробности: `doc/LINK_V2.md`, `doc/ARTIFACTS.md`.
 

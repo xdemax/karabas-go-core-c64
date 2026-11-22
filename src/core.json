@@ -1,7 +1,7 @@
 {
     "id": "c64",
     "name": "Commodore 64",
-    "build": "26111760",
+    "build": "26112210",
     "link": 2,
     "visible": true,
     "type": "osd",
